@@ -17,8 +17,8 @@ CREATE TABLE tbCrianca (
 	idCrianca INT PRIMARY KEY IDENTITY(1,1)
 	,nomeCrianca VARCHAR(150) NOT NULL
 	,dtNascCrianca DATE NOT NULL
-    ,idStatus INT REFERENCES tbStatus(idStatus)
-    ,idGenero INT REFERENCES tbGenero(idGenero)
+    	,idStatus INT REFERENCES tbStatus(idStatus)
+    	,idGenero INT REFERENCES tbGenero(idGenero)
 );
 
 CREATE TABLE tbGenitor (
