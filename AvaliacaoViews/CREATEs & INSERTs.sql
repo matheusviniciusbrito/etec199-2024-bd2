@@ -1,3 +1,6 @@
+CREATE DATABASE bdRecursosHumanos
+USE bdRecursosHumanos
+
 CREATE TABLE tbDepartamento (
 	codDepartamento INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
 	nomeDepartamento VARCHAR(45) NOT NULL
