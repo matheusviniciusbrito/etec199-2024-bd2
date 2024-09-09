@@ -1,5 +1,5 @@
-CREATE DATABASE dbEncomendas
-USE dbEncomendas
+CREATE DATABASE dbEncomenda
+USE dbEncomenda
 GO
 
 CREATE TABLE tbCategoriaProduto (

@@ -1,4 +1,4 @@
-USE dbEncomendas
+USE dbEncomenda
 GO
 
 --a)
@@ -15,13 +15,12 @@ BEGIN
         PRINT 'Categoria já existe.';
     END
 END;
-GO
-
 
 EXEC spInsertCategorias @categoria = 'Bolo Festa';
 EXEC spInsertCategorias @categoria = 'Bolo Simples';
 EXEC spInsertCategorias @categoria = 'Torta';
 EXEC spInsertCategorias @categoria = 'Salgado';
+GO
 
 --b)
 CREATE PROCEDURE spInsertNomeVerifica
@@ -62,11 +61,10 @@ EXEC spInsertNomeVerifica 'Torta de escarola', 44.00, 3;
 EXEC spInsertNomeVerifica 'Coxinha frango', 25.00, 4;
 EXEC spInsertNomeVerifica 'Esfiha carne', 27.00, 4;
 EXEC spInsertNomeVerifica 'Folhado queijo', 31.00, 4;
-
+EXEC spInsertNomeVerifica 'Risoles misto', 29.00, 4;
 GO
 
 --c)
-SELECT * FROM tbCliente
 
 CREATE PROCEDURE spCadastroCliente
     @nomeCliente VARCHAR(100),
@@ -112,7 +110,7 @@ EXEC spCadastroCliente
     @bairroCliente = 'Guaianases',
     @cidadeCliente = 'São Paulo',
     @estadoCliente = 'SP',
-    @cpfCliente = '123.456.789-01',
+    @cpfCliente = '12345678901',
     @sexoCliente = 'F';
 
 -- Celia Nogueira
@@ -125,7 +123,7 @@ EXEC spCadastroCliente
     @bairroCliente = 'Guaianases',
     @cidadeCliente = 'São Paulo',
     @estadoCliente = 'SP',
-    @cpfCliente = '234.567.890-12',
+    @cpfCliente = '23456789012',
     @sexoCliente = 'F';
 
 -- Paulo Cesar Siqueira
@@ -138,7 +136,7 @@ EXEC spCadastroCliente
     @bairroCliente = 'Itaquera',
     @cidadeCliente = 'São Paulo',
     @estadoCliente = 'SP',
-    @cpfCliente = '345.678.901-23',
+    @cpfCliente = '34567890123',
     @sexoCliente = 'M';
 
 -- Rodrigo Favaroni
@@ -151,7 +149,7 @@ EXEC spCadastroCliente
     @bairroCliente = 'Guaianases',
     @cidadeCliente = 'São Paulo',
     @estadoCliente = 'SP',
-    @cpfCliente = '456.789.012-34',
+    @cpfCliente = '45678901234',
     @sexoCliente = 'M';
 
 -- Flávia Regina Brito
@@ -164,16 +162,12 @@ EXEC spCadastroCliente
     @bairroCliente = 'Itaquera',
     @cidadeCliente = 'São Paulo',
     @estadoCliente = 'SP',
-    @cpfCliente = '567.890.123-45',
+    @cpfCliente = '56789012345',
     @sexoCliente = 'F';
 GO
 
 
 --d)
-select * from tbCliente
-
-SELECT * FROM tbEncomenda
-
 CREATE PROCEDURE spCriarEncomenda
     @cpfCliente VARCHAR(11),
     @dataEncomenda DATE,
@@ -215,43 +209,208 @@ BEGIN
 END;
 GO
 
-SELECT * FROM tbEncomenda
 -- Encomenda 1
 EXEC spCriarEncomenda
-    @cpfCliente = '123.456.789',
+    @cpfCliente = '12345678901',  -- CPF do Cliente 1
     @dataEncomenda = '2015-08-08',
     @valorTotalEncomenda = 450.00,
     @dataEntregaEncomenda = '2015-08-15';
 
-
 -- Encomenda 2
 EXEC spCriarEncomenda
-    @cpfCliente = '234.567.890', -- Verifique se este CPF corresponde ao codCliente = 2
+    @cpfCliente = '23456789012',  -- CPF do Cliente 2
     @dataEncomenda = '2015-10-10',
     @valorTotalEncomenda = 200.00,
     @dataEntregaEncomenda = '2015-10-15';
 
 -- Encomenda 3
 EXEC spCriarEncomenda
-    @cpfCliente = '345.678.901', -- Verifique se este CPF corresponde ao codCliente = 3
+    @cpfCliente = '34567890123',  -- CPF do Cliente 3
     @dataEncomenda = '2015-10-10',
     @valorTotalEncomenda = 150.00,
     @dataEntregaEncomenda = '2015-12-10';
 
 -- Encomenda 4
 EXEC spCriarEncomenda
-    @cpfCliente = '123.456.789', -- Correspondente ao codCliente = 1
+    @cpfCliente = '12345678901',  -- CPF do Cliente 1
     @dataEncomenda = '2015-10-06',
     @valorTotalEncomenda = 250.00,
     @dataEntregaEncomenda = '2015-10-12';
 
 -- Encomenda 5
 EXEC spCriarEncomenda
-    @cpfCliente = '456.789.012', -- Verifique se este CPF corresponde ao codCliente = 4
+    @cpfCliente = '45678901234',  -- CPF do Cliente 4
     @dataEncomenda = '2015-10-05',
     @valorTotalEncomenda = 150.00,
     @dataEntregaEncomenda = '2015-10-12';
 
---Arrumar cpf do ex D
-
+GO
 --e)
+
+CREATE PROCEDURE spInsertItemEncomenda
+    @codEncomenda INT,
+    @codProduto INT,
+    @quantidadeKilos DECIMAL(10, 2),
+    @subTotal DECIMAL(10, 2)
+AS
+BEGIN
+    INSERT INTO tbItensEncomenda (codEncomenda, codProduto, quantidadeKilos, subTotal)
+    VALUES (@codEncomenda, @codProduto, @quantidadeKilos, @subTotal);
+	PRINT('Item da encomenda cadastrado com sucesso!')
+END;
+
+-- Inserindo os itens da encomenda 1
+EXEC spInsertItemEncomenda
+    @codEncomenda = 1,
+    @codProduto = 1,
+    @quantidadeKilos = 2.5,
+    @subTotal = 105.00;
+
+EXEC spInsertItemEncomenda
+    @codEncomenda = 1,
+    @codProduto = 10,
+    @quantidadeKilos = 2.6,
+    @subTotal = 70.00;
+
+EXEC spInsertItemEncomenda
+    @codEncomenda = 1,
+    @codProduto = 9,
+    @quantidadeKilos = 6.0,
+    @subTotal = 150.00;
+
+EXEC spInsertItemEncomenda
+    @codEncomenda = 1,
+    @codProduto = 12,
+    @quantidadeKilos = 4.3,
+    @subTotal = 125.00;
+
+-- Inserindo os itens da encomenda 2
+EXEC spInsertItemEncomenda
+    @codEncomenda = 2,
+    @codProduto = 9,
+    @quantidadeKilos = 8.0,
+    @subTotal = 200.00;
+
+-- Inserindo os itens da encomenda 3
+EXEC spInsertItemEncomenda
+    @codEncomenda = 3,
+    @codProduto = 11,
+    @quantidadeKilos = 3.2,
+    @subTotal = 100.00;
+
+EXEC spInsertItemEncomenda
+    @codEncomenda = 3,
+    @codProduto = 9,
+    @quantidadeKilos = 2.0,
+    @subTotal = 50.00;
+
+-- Inserindo os itens da encomenda 4
+EXEC spInsertItemEncomenda
+    @codEncomenda = 4,
+    @codProduto = 2,
+    @quantidadeKilos = 3.5,
+    @subTotal = 150.00;
+
+EXEC spInsertItemEncomenda
+    @codEncomenda = 4,
+    @codProduto = 3,
+    @quantidadeKilos = 2.2,
+    @subTotal = 100.00;
+
+-- Inserindo o item da encomenda 5
+EXEC spInsertItemEncomenda
+    @codEncomenda = 5,
+    @codProduto = 6,
+    @quantidadeKilos = 3.4,
+    @subTotal = 150.00;
+GO
+
+--fa)
+
+CREATE PROCEDURE spAumentarPrecoBoloFesta
+AS
+BEGIN
+    UPDATE tbProduto
+    SET precokiloProduto = precokiloProduto * 1.10
+    WHERE codCategoriaProduto = 1; -- Código da categoria "Bolo festa"
+END;
+
+EXEC spAumentarPrecoBoloFesta
+GO
+
+-- fb) Aplicar desconto de 20% nos produtos da categoria “Bolo simples”
+CREATE PROCEDURE spDescontoBoloSimples
+AS
+BEGIN
+    UPDATE tbProduto
+    SET precokiloProduto = precokiloProduto * 0.80
+    WHERE codCategoriaProduto = 2; -- Código da categoria "Bolo simples"
+END;
+
+EXEC spDescontoBoloSimples;
+GO
+
+-- fc) Aumentar o preço dos produtos da categoria “Torta” em 25%
+CREATE PROCEDURE spAumentarPrecoTorta
+AS
+BEGIN
+    UPDATE tbProduto
+    SET precokiloProduto = precokiloProduto * 1.25
+    WHERE codCategoriaProduto = 3; -- Código da categoria "Torta"
+END;
+
+EXEC spAumentarPrecoTorta;
+GO
+
+-- fd) Aumentar o preço dos produtos da categoria “Salgado”, exceto a esfiha de carne, em 20%
+CREATE PROCEDURE spAumentarPrecoSalgado
+AS
+BEGIN
+    UPDATE tbProduto
+    SET precokiloProduto = precokiloProduto * 1.20
+    WHERE codCategoriaProduto = 4 -- Código da categoria "Salgado"
+    AND codProduto <> (
+        SELECT codProduto
+        FROM tbProduto
+        WHERE nomeProduto = 'Esfiha de carne'
+    );
+END;
+
+EXEC spAumentarPrecoSalgado;
+GO
+
+--g)
+CREATE PROCEDURE spExcluirCliente
+    @cpfCliente VARCHAR(11)
+AS
+BEGIN
+    DECLARE @codCliente INT;
+    DECLARE @nomeCliente VARCHAR(100);
+
+    -- Buscar o código do cliente e nome baseado no CPF
+    SET @codCliente = (SELECT codCliente FROM tbCliente WHERE cpfCliente = @cpfCliente);
+    SET @nomeCliente = (SELECT nomeCliente FROM tbCliente WHERE cpfCliente = @cpfCliente);
+
+    IF @codCliente IS NULL
+    BEGIN
+        PRINT 'Cliente não encontrado.';
+    END
+    ELSE
+    BEGIN
+        IF EXISTS (SELECT 1 FROM tbEncomenda WHERE codCliente = @codCliente)
+        BEGIN
+            PRINT 'Impossível remover esse cliente pois o cliente ' + @nomeCliente + ' possui encomendas';
+        END
+        ELSE
+        BEGIN
+            DELETE FROM tbCliente WHERE cpfCliente = @cpfCliente;
+            PRINT 'Cliente ' + @nomeCliente + ' removido com sucesso';
+        END
+    END
+END;
+
+EXEC spExcluirCliente
+    @cpfCliente = '12345678901'; --teste
+GO
+
+
