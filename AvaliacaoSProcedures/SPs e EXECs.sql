@@ -3,7 +3,7 @@ GO
 
 --a)
 CREATE PROCEDURE spInsertCategorias
-    @categoria NVARCHAR(100)
+    @categoria VARCHAR(100)
 AS
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM tbCategoriaProduto WHERE nomeCategoriaProduto = @categoria)
@@ -413,4 +413,50 @@ EXEC spExcluirCliente
     @cpfCliente = '12345678901'; --teste
 GO
 
+--h)
+CREATE PROCEDURE spExcluirItemEncomenda
+    @codEncomenda INT,
+    @codProduto INT
+AS
+BEGIN
+    DECLARE @dataEntregaEncomenda DATE;
+    DECLARE @subTotal DECIMAL(10, 2);
+    DECLARE @valorTotalEncomenda DECIMAL(10, 2);
+
+    SET @dataEntregaEncomenda = (SELECT dataEntregaEncomenda FROM tbEncomenda WHERE codEncomenda = @codEncomenda);
+
+    IF @dataEntregaEncomenda > GETDATE()
+    BEGIN
+        -- busca o subtotal do item que será removido
+        SET @subTotal = (SELECT subTotal FROM tbItensEncomenda WHERE codEncomenda = @codEncomenda AND codProduto = @codProduto);
+
+        -- calcula novo total da encomenda
+        SET @valorTotalEncomenda = (SELECT valorTotalEncomenda FROM tbEncomenda WHERE codEncomenda = @codEncomenda);
+        SET @valorTotalEncomenda = @valorTotalEncomenda - @subTotal;
+
+        -- atualiza encomenda com novo valor total
+        UPDATE tbEncomenda
+        SET valorTotalEncomenda = @valorTotalEncomenda
+        WHERE codEncomenda = @codEncomenda;
+
+        -- remove item
+        DELETE FROM tbItensEncomenda
+        WHERE codEncomenda = @codEncomenda AND codProduto = @codProduto;
+
+        PRINT 'Item removido e valor total da encomenda atualizado com sucesso.';
+    END
+    ELSE
+    BEGIN
+        PRINT 'A encomenda já foi entregue ou será entregue hoje. Não é possível remover itens.';
+    END
+END;
+
+-- Remover um item de uma encomenda
+EXEC spExcluirItemEncomenda
+    @codEncomenda = 1,
+    @codProduto = 9; 
+
+GO
+
+-- esses deram trabalho em prof 
 
