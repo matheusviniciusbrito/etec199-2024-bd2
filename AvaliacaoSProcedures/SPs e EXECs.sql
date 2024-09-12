@@ -423,6 +423,18 @@ BEGIN
     DECLARE @subTotal DECIMAL(10, 2);
     DECLARE @valorTotalEncomenda DECIMAL(10, 2);
 
+	    IF NOT EXISTS (SELECT 1 FROM tbEncomenda WHERE codEncomenda = @codEncomenda)
+    BEGIN
+        PRINT 'Encomenda não encontrada.';
+        RETURN;
+    END
+
+    IF NOT EXISTS (SELECT 1 FROM tbItensEncomenda WHERE codEncomenda = @codEncomenda AND codProduto = @codProduto)
+    BEGIN
+        PRINT 'O produto especificado não existe nesta encomenda.';
+        RETURN;
+    END
+
     SET @dataEntregaEncomenda = (SELECT dataEntregaEncomenda FROM tbEncomenda WHERE codEncomenda = @codEncomenda);
 
     IF @dataEntregaEncomenda > GETDATE()
