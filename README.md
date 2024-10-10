@@ -1,3 +1,19 @@
-# etec199-2024-bd2
+# 📘 Exercícios de Banco de Dados 2
 
-##Repositório dedicado para exercicios da disciplina de Banco de Dados II
+📚 **Sobre**  
+Repositório contendo o desenvolvimento dos exercícios da disciplina de Banco de Dados 2. Os exercícios incluem práticas e avaliações relacionadas a diferentes tópicos abordados ao longo do curso.
+
+⭐ **Conteúdo Abordado**
+- Stored Procedures (SP);
+- Views;
+- Triggers;
+- Subqueries;
+- Otimizações e verificações de banco de dados.
+
+💻 **Tecnologia**
+- Microsoft SQL Server
+
+🔗 **Contribuição**  
+Para clonar este repositório:
+```bash
+$ git clone https://github.com/matheusviniciusbrito/etec199-2024-bd2
