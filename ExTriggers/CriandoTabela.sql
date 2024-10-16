@@ -1,5 +1,5 @@
-CREATE DATABASE triggers
-USE triggers
+CREATE DATABASE bdExTriggers
+USE bdExTriggers
 /*EX1*/
 CREATE TABLE tbMotorista (
     idMotorista INT PRIMARY KEY IDENTITY(1,1),

@@ -1,4 +1,4 @@
-USE triggers
+USE bdExTriggers
 
 INSERT INTO tbMotorista (nomeMotorista, dataNascimento, cpfMotorista, CNHMotorista, pontuacaoAcumulada)
 VALUES

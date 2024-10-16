@@ -1,4 +1,4 @@
-USE triggers
+USE bdExTriggers
 /*ex1*/
 CREATE TRIGGER trAtualizarPontuaçãoMotorista
 ON tbMultas
@@ -19,7 +19,7 @@ BEGIN
 
 	IF @pontuacaoAtual >=20
 	BEGIN
-		PRINT 'Atenção sua habilitação foi suspensa'
+		PRINT 'Você alcançou 20 pontos na sua carteira! Sua habilitação pode ser suspensa!'
 	END;
 END;
 
@@ -37,6 +37,7 @@ BEGIN
     FROM tbContaCorrente
     INNER JOIN inserted ON tbContaCorrente.numConta = inserted.numConta;
 END;
+
 
 
 CREATE TRIGGER tr_AtualizaSaldoSaque
@@ -67,3 +68,24 @@ BEGIN
     END;
 END;
 
+-- A conta 1 tem saldo inicial de 1000.00
+INSERT INTO tbSaque (valorSaque, numConta, dataSaque, horaSaque)
+VALUES (200.00, 1, '2024-10-17', '10:00');  -- Saldo restante deverá ser 800.00
+
+SELECT * FROM tbContaCorrente
+
+-- A conta 1 agora tem saldo de 800.00
+INSERT INTO tbSaque (valorSaque, numConta, dataSaque, horaSaque)
+VALUES (800.00, 1, '2024-10-17', '11:00');  -- Saldo restante deverá ser 0.00
+
+-- A conta 1 agora tem saldo 0.00
+INSERT INTO tbSaque (valorSaque, numConta, dataSaque, horaSaque)
+VALUES (100.00, 1, '2024-10-17', '12:00');  -- Deve retornar erro ou não permitir
+
+-- A conta 2 tem saldo inicial de 2500.50
+INSERT INTO tbSaque (valorSaque, numConta, dataSaque, horaSaque)
+VALUES (1000.00, 2, '2024-10-17', '14:00');  -- Saldo restante deverá ser 1500.50
+
+-- A conta 3 tem saldo de 1500.75
+INSERT INTO tbSaque (valorSaque, numConta, dataSaque, horaSaque)
+VALUES (2000.00, 3, '2024-10-17', '15:00');  -- Deve retornar erro ou não permitir
