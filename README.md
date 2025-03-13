@@ -1,7 +1,7 @@
 # 📘 Exercícios de Banco de Dados 2
 
 📚 **Sobre**  
-Repositório contendo o desenvolvimento dos exercícios da disciplina de Banco de Dados 2. Os exercícios incluem práticas e avaliações relacionadas a diferentes tópicos abordados ao longo do curso de Desenvolvimento de Sistemas na ETEC. 
+Repositório contendo o desenvolvimento dos exercícios da disciplina de Banco de Dados 2. Os exercícios incluem práticas e avaliações relacionadas a diferentes tópicos abordados ao longo do 2º ano do curso de Desenvolvimento de Sistemas da ETEC no ano de 2024. 
 
 ⭐ **Conteúdo Abordado**
 - Stored Procedures (SP);
